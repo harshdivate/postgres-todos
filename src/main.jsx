@@ -9,10 +9,16 @@ import { store } from './Store/Store.js'
 import LoginSuccess from './LoginSuccess/LoginSuccess.jsx'
 import LoginForm from './LoginForm/LoginForm.jsx'
 import { CookiesProvider } from 'react-cookie'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
+import persistReducer from 'redux-persist/es/persistReducer'
+
+const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <CookiesProvider defaultSetOptions={{ path: '/' }}>
+    {/* <CookiesProvider defaultSetOptions={{ path: '/' }}> */}
+      <PersistGate  loading={null} persistor={persistor}>
    <Router>
     <Routes>
       <Route path="/" element={<Home/>}/>
@@ -20,7 +26,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path='/login' element={<LoginForm/>}/>
     </Routes>
    </Router>
-   </CookiesProvider>
+   </PersistGate>
+   {/* </CookiesProvider> */}
   </Provider>
   
 )

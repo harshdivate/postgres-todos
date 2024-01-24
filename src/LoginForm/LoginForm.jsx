@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../Features/authAction.js';
 import axios from "axios";
+
 import { NavLink, useNavigate } from 'react-router-dom';
 
 // {"status":true,"message":"user logged in successfully",
@@ -35,7 +36,6 @@ function LoginForm() {
     const submitForm =  (data) => {
       console.log(data);
       dispatch(loginUser(data))
-
     }
   
     const handleClick = async () => {

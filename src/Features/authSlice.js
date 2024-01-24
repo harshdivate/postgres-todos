@@ -14,9 +14,11 @@ const initialState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
+
   reducers: {
     setUser: (state, action) => {
-      state.userInfo = action.payload;
+      // state.userInfo = action.payload;
+      console.log(action);
       state.userToken = action.payload.accessToken;
       state.success = true;
     },
@@ -35,15 +37,18 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, { payload }) => {
         (state.error = payload), (state.loading = false);
       });
-    // builder.addCase(logoutUser.pending, (state) => {
-    //   (state.loading = true), (state.error = null);
-    // });
-    // builder.addCase(logoutUser.fulfilled, (state, { payload }) => {
-    //   (state.userInfo = {}), (state.success = false), (state.userToken = null);
-    // });
-    // builder.addCase(logoutUser.rejected, (state, { payload }) => {
-    //   (state.error = payload), (state.loading = false);
-    // });
+    builder.addCase(logoutUser.pending, (state) => {
+      (state.loading = true), (state.error = null);
+    });
+    builder.addCase(logoutUser.fulfilled, (state, { payload }) => {
+      (state.userInfo = {}),
+        (state.success = false),
+        (state.userToken = null),
+        (state.loading = false);
+    });
+    builder.addCase(logoutUser.rejected, (state, { payload }) => {
+      (state.error = payload), (state.loading = false);
+    });
   },
 });
 

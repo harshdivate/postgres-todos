@@ -38,6 +38,8 @@ export const logoutUser = createAsyncThunk(
       const { data } = await instance.post("/api/v1/users/logout", {
         email: email,
       });
+      localStorage.removeItem("persist:root");
+      console.log("Removed the persisted data");
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
