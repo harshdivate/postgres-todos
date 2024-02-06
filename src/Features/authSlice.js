@@ -22,6 +22,13 @@ export const authSlice = createSlice({
       state.userToken = action.payload.accessToken;
       state.success = true;
     },
+    setInitialState: (state, action) => {
+      (state.userToken = null),
+        (state.success = false),
+        (state.userInfo = {}),
+        (state.loading = false),
+        localStorage.removeItem("persist:root");
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,6 +59,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, setInitialState } = authSlice.actions;
 
 export default authSlice.reducer;

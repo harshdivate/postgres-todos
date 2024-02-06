@@ -4,7 +4,7 @@ import './Home.css'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { CookiesProvider , useCookies ,Cookies} from 'react-cookie'
-import { setUser } from './Features/authSlice.js'
+import { setInitialState } from './Features/authSlice.js'
 import useTodoDummy from './useDummyTodos.js'
 
 function Home() {
@@ -20,15 +20,14 @@ function Home() {
 
   useEffect(()=>{
   const accessToken = cookies.accessToken;
-    if(!success){
+    if(!accessToken){
+      dispatch(setInitialState())
       navigate('/login')
     }
  
   setTimeout(()=>{
       const data = useTodoDummy();
-      
       setTodoItems(data);
-     
       setDataLoaded((prev)=> !prev)
   },5000)
   },[success])
