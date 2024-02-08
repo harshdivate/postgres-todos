@@ -36,10 +36,14 @@ function Home() {
      <div className='home-container'>
        <Navbar/>
             {/* Grid system  */}
+            <div className="addTodoButton">
+              <button>
+                Add Todo 
+                {/* https://stackoverflow.com/questions/58605846/how-to-show-a-form-in-the-same-window-on-onclick-event-of-a-button-in-react-js */}
+              </button>
+            </div>
             <div className='grid-container'>
               {/* Individual Todo */}
-             
-
               {todoItems.map(e => 
                 (
                   <div  key= {e.id} className='todo-main'>
