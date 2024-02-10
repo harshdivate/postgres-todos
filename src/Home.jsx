@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CookiesProvider , useCookies ,Cookies} from 'react-cookie'
 import { setInitialState } from './Features/authSlice.js'
 import useTodoDummy from './useDummyTodos.js'
+import AddTodoForm from './components/AddTodoFrom/AddTodoForm.jsx'
 
 function Home() {
   const navigate = useNavigate();
@@ -13,10 +14,13 @@ function Home() {
   const dispatch = useDispatch();
   const [cookies , setCookie] = useCookies(['accessToken']);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [addTodoForm,setAddTodoForm] = useState(false);
 
   const [todoItems, setTodoItems] = useState(Array.from({ length: 20 }, (_, index) => ({ id: index, data: {} })));
 
-
+  const toggleTodoFrom = () => {
+    setAddTodoForm((prev) => !prev)
+  }
 
   useEffect(()=>{
   const accessToken = cookies.accessToken;
@@ -37,10 +41,11 @@ function Home() {
        <Navbar/>
             {/* Grid system  */}
             <div className="addTodoButton">
-              <button>
+              <button onClick={toggleTodoFrom}>
                 Add Todo 
                 {/* https://stackoverflow.com/questions/58605846/how-to-show-a-form-in-the-same-window-on-onclick-event-of-a-button-in-react-js */}
               </button>
+              <AddTodoForm trigger={addTodoForm}/>
             </div>
             <div className='grid-container'>
               {/* Individual Todo */}

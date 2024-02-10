@@ -29,6 +29,9 @@ export const authSlice = createSlice({
         (state.loading = false),
         localStorage.removeItem("persist:root");
     },
+    getUser: (state, action) => {
+      return state.userInfo;
+    },
   },
   extraReducers: (builder) => {
     builder
