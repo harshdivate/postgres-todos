@@ -15,6 +15,8 @@ function Home() {
   const [cookies , setCookie] = useCookies(['accessToken']);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [addTodoForm,setAddTodoForm] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+
 
   const [todoItems, setTodoItems] = useState(Array.from({ length: 20 }, (_, index) => ({ id: index, data: {} })));
 
@@ -41,11 +43,11 @@ function Home() {
        <Navbar/>
             {/* Grid system  */}
             <div className="addTodoButton">
-              <button onClick={toggleTodoFrom}>
+              <button onClick={(e)=>setTrigger(true)}>
                 Add Todo 
                 {/* https://stackoverflow.com/questions/58605846/how-to-show-a-form-in-the-same-window-on-onclick-event-of-a-button-in-react-js */}
               </button>
-              <AddTodoForm trigger={addTodoForm}/>
+              <AddTodoForm trigger={trigger} setTrigger={setTrigger}/>
             </div>
             <div className='grid-container'>
               {/* Individual Todo */}

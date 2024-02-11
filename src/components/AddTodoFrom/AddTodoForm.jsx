@@ -1,19 +1,25 @@
 import React,{useState} from 'react'
 import './AddTodoForm.css'
+import { useDispatch,useSelector } from 'react-redux';
+import { postTodo } from '../../Features/todoAction';
 
 function AddTodoForm(props) {
 
   const [date,setDate] = useState(new Date());
   const [description,setDescription] = useState('');
-  const [task,setTask] = useState();
+  const [title,setTitle] = useState();
+  
 
   const handleCancel = () => {
-    props.trigger = false
+    props.setTrigger(false);
   }
 
-  const submitForm = (e) => {
+  const submitForm = async(e) => {
     e.preventDefault();
-    console.log('Task is '+task+'Descirpitong is' + description + 'Date is' +date)
+    // send request to backend
+    const result = await postTodo({title,description,date,userId:'3'})
+    console.log(result)
+      props.setTrigger(false);
   }
 
   return (props.trigger) ? (
@@ -30,11 +36,11 @@ function AddTodoForm(props) {
               type="text"
               name="firstname"
               id="firstname"
-              placeholder="Add Task"
+              placeholder="Add title"
               class="formbold-form-input"
-              onChange={(e)=>setTask(e.target.value)}
+              onChange={(e)=>setTitle(e.target.value)}
               />
-              <label for="firstname" class="formbold-form-label"> Task </label>
+              <label for="firstname" class="formbold-form-label"> Title </label>
           </div>
           
         </div>
