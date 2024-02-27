@@ -10,6 +10,7 @@ import AddTodoForm from './components/AddTodoFrom/AddTodoForm.jsx'
 
 function Home() {
   const navigate = useNavigate();
+  const {todos} = useSelector((state) => state.todo)
   const {success,userInfo , error ,userToken } = useSelector((state)=>state.auth)
   const dispatch = useDispatch();
   const [cookies , setCookie] = useCookies(['accessToken']);
@@ -18,11 +19,13 @@ function Home() {
   const [trigger, setTrigger] = useState(false);
 
 
-  const [todoItems, setTodoItems] = useState(Array.from({ length: 20 }, (_, index) => ({ id: index, data: {} })));
+  // const [todoItems, setTodoItems] = useState(Array.from({ length: 20 }, (_, index) => ({ id: index, data: {} })));
+  const [todoItems, setTodoItems] = useState(todos)
 
   const toggleTodoFrom = () => {
     setAddTodoForm((prev) => !prev)
   }
+  console.log(todos)
 
   useEffect(()=>{
   const accessToken = cookies.accessToken;
@@ -32,8 +35,6 @@ function Home() {
     }
  
   setTimeout(()=>{
-      const data = useTodoDummy();
-      setTodoItems(data);
       setDataLoaded((prev)=> !prev)
   },5000)
   },[success])

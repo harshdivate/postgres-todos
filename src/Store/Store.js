@@ -1,6 +1,7 @@
 // // Create a store
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authSlice from "../Features/authSlice.js";
+import todoSlice from "../Features/todoSlice.js";
 // import persistReducer from "redux-persist/lib/persistReducer";
 
 import storage from "redux-persist/lib/storage";
@@ -14,7 +15,7 @@ const persistConfig = {
   // whitelist: ["auth"], // reducers to persist, add your reducer names here
 };
 
-const reducer = combineReducers({ auth: authSlice });
+const reducer = combineReducers({ auth: authSlice, todo: todoSlice });
 
 export const persistedReducer = persistReducer(persistConfig, reducer);
 
