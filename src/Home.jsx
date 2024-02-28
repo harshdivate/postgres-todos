@@ -7,20 +7,22 @@ import { CookiesProvider , useCookies ,Cookies} from 'react-cookie'
 import { setInitialState } from './Features/authSlice.js'
 import useTodoDummy from './useDummyTodos.js'
 import AddTodoForm from './components/AddTodoFrom/AddTodoForm.jsx'
+import { getTodosOfUser } from './Features/todoAction.js'
 
 function Home() {
   const navigate = useNavigate();
-  const {todos} = useSelector((state) => state.todo)
+  const {todos,todoLoading,todoSuccess} = useSelector((state) => state.todo)
   const {success,userInfo , error ,userToken } = useSelector((state)=>state.auth)
+  const id = userInfo.id
   const dispatch = useDispatch();
+  const [isTodosAvailable,setTodosAvailable] = useState(todoLoading)
   const [cookies , setCookie] = useCookies(['accessToken']);
-  const [dataLoaded, setDataLoaded] = useState(false);
   const [addTodoForm,setAddTodoForm] = useState(false);
   const [trigger, setTrigger] = useState(false);
 
 
   // const [todoItems, setTodoItems] = useState(Array.from({ length: 20 }, (_, index) => ({ id: index, data: {} })));
-  const [todoItems, setTodoItems] = useState(todos)
+  // const [todoItems, setTodoItems] = useState(todos)
 
   const toggleTodoFrom = () => {
     setAddTodoForm((prev) => !prev)
@@ -33,11 +35,23 @@ function Home() {
       dispatch(setInitialState())
       navigate('/login')
     }
- 
-  setTimeout(()=>{
-      setDataLoaded((prev)=> !prev)
-  },5000)
-  },[success])
+    // const getTodoOfUser = async (id) => {
+    //   dispatch(getTodosOfUser(id))
+    // }
+    else {
+    if (id) {
+      const getTodoOfUser = async (id) => {
+        dispatch(getTodosOfUser({id : id}));
+      };
+      
+      getTodoOfUser(id); // Pass the user's ID to the function
+    }
+  }
+    
+    if(success){
+      setTodosAvailable(true)
+    }
+  },[success,todoSuccess,isTodosAvailable])
   
   return (
      <div className='home-container'>
@@ -50,28 +64,29 @@ function Home() {
               </button>
               <AddTodoForm trigger={trigger} setTrigger={setTrigger}/>
             </div>
+            <div></div>
             <div className='grid-container'>
               {/* Individual Todo */}
-              {todoItems.map(e => 
+              {todos.map(e => 
                 (
                   <div  key= {e.id} className='todo-main'>
-                  <div className={` ${dataLoaded ? 'todo-heading' : 'skeleton skeleton-heading'}`}>
-                     {dataLoaded && e.todoHeading}
+                  <div className={` ${isTodosAvailable ? 'todo-heading' : 'skeleton skeleton-heading'}`}>
+                     {isTodosAvailable && e.title}
                   </div>
                   <div className='todo-description '>
-                    {dataLoaded && e.todoDescription}
-                    <div className={` ${dataLoaded ? '' : 'skeleton skeleton-text'}`}></div>
-                    <div className={`${dataLoaded ? '' : 'skeleton skeleton-text'}`}></div>
-                    <div className={`${dataLoaded ? '' : 'skeleton skeleton-text'}`}></div>
+                    {isTodosAvailable && e.description}
+                    <div className={` ${isTodosAvailable ? '' : 'skeleton skeleton-text'}`}></div>
+                    <div className={`${isTodosAvailable ? '' : 'skeleton skeleton-text'}`}></div>
+                    <div className={`${isTodosAvailable ? '' : 'skeleton skeleton-text'}`}></div>
                   </div>
-                  <div className={`todo-date ${dataLoaded ? '' : 'skeleton skeleton-date'}`}>{dataLoaded && e.date}</div>
+                  <div className={`todo-date ${isTodosAvailable ? '' : 'skeleton skeleton-date'}`}>{isTodosAvailable && JSON.stringify(e.date)}</div>
 
                   <div className='todo-footer'>
-                    <div className={`todo-status ${dataLoaded ? '' : 'skeleton skeleton-status'}`}>{dataLoaded && e.status}</div>
+                    <div className={`todo-status ${isTodosAvailable ? '' : 'skeleton skeleton-status'}`}>{isTodosAvailable && e.status}</div>
                     <div className='todo-options'>
-                    <div className={` ${dataLoaded ? '' : 'skeleton skeleton-options'}`}>{dataLoaded && e.isFavourite}</div> 
-                    <div className={`${dataLoaded ? '' : 'skeleton skeleton-options'}`}>{dataLoaded && 'D'}</div>
-                    <div className={` ${dataLoaded ? '' : 'skeleton skeleton-options'}`}>{dataLoaded && 'M'}</div>
+                    <div className={` ${isTodosAvailable ? '' : 'skeleton skeleton-options'}`}>{isTodosAvailable}</div> 
+                    <div className={`${isTodosAvailable ? '' : 'skeleton skeleton-options'}`}>{isTodosAvailable && 'D'}</div>
+                    <div className={` ${isTodosAvailable ? '' : 'skeleton skeleton-options'}`}>{isTodosAvailable && 'M'}</div>
                     </div>
                   </div>
               </div>
@@ -82,6 +97,7 @@ function Home() {
            
             
             </div>
+
        
    </div>
 

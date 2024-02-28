@@ -1,20 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTodo } from "./todoAction.js";
+import { addTodo, getTodosOfUser } from "./todoAction.js";
 
 const initialState = {
   todos: [
     {
       id: 1,
-      todoHeading: "Complete project proposal",
-      todoDescription: "Draft and finalize the project proposal for client X.",
+      title: "Complete project proposal",
+      description: "Draft and finalize the project proposal for client X.",
       date: "2024-02-27T08:00:00.000Z",
       status: "Pending",
-      isFavourite: "F",
     },
     {
       id: 2,
-      todoHeading: "Call plumber",
-      todoDescription:
+      title: "Call plumber",
+      description:
         "Schedule an appointment with the plumber to fix the leaking faucet.",
       date: "2024-02-28T10:30:00.000Z",
       status: "Pending",
@@ -22,17 +21,17 @@ const initialState = {
     },
     {
       id: 3,
-      todoHeading: "Buy groceries",
-      todoDescription:
+      title: "Buy groceries",
+      description:
         "Pick up milk, eggs, bread, and vegetables from the supermarket.",
       date: "2024-02-29T14:00:00.000Z",
       status: "Pending",
       isFavourite: "F",
     },
   ],
-  loading: false,
+  todoLoading: false,
   error: null,
-  success: false,
+  todoSuccess: false,
   t: {},
 };
 
@@ -52,6 +51,20 @@ export const todoSlice = createSlice({
           (state.success = true);
       })
       .addCase(addTodo.rejected, (state, { payload }) => {
+        (state.error = payload), (state.loading = false);
+      });
+    builder
+      .addCase(getTodosOfUser.pending, (state) => {
+        (state.loading = true), (state.error = null);
+      })
+      .addCase(getTodosOfUser.fulfilled, (state, { payload }) => {
+        console.log("Payload is " + JSON.stringify(payload));
+        console.log("Payload is " + payload);
+        state.todos.push(payload),
+          (state.loading = false),
+          (state.success = true);
+      })
+      .addCase(getTodosOfUser.rejected, (state, { payload }) => {
         (state.error = payload), (state.loading = false);
       });
   },

@@ -62,3 +62,23 @@ export const addTodo = createAsyncThunk(
     }
   }
 );
+
+export const getTodosOfUser = createAsyncThunk(
+  "todo/getTodoWithId",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      console.log("here");
+      const { data } = await instance.get("/api/v1/todo/gettodosWithId", {
+        id,
+      });
+      console.log("Data");
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error);
+      } else {
+        return rejectWithValue(error);
+      }
+    }
+  }
+);

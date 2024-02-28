@@ -12,7 +12,7 @@ const persistConfig = {
   key: "root", // key for localStorage key
   storage, // storage engine
   version: 1,
-  // whitelist: ["auth"], // reducers to persist, add your reducer names here
+  whitelist: ["auth"], // reducers to persist, add your reducer names here
 };
 
 const reducer = combineReducers({ auth: authSlice, todo: todoSlice });
