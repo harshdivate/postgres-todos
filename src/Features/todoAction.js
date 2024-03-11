@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "./todoSlice";
 
 // export const postTodo = async (
 //   title,
@@ -42,7 +44,6 @@ export const addTodo = createAsyncThunk(
 
   async ({ title, description, date, userId }, { rejectWithValue }) => {
     try {
-      console.log(title, description, date, userId);
       const { data } = await instance.post("/api/v1/todo/inserttodo", {
         title,
         description,
@@ -51,7 +52,7 @@ export const addTodo = createAsyncThunk(
       });
       const id = data.data.id;
       const todoObject = { id, title, description, date, userId };
-      console.log("Todo object is " + JSON.stringify(todoObject));
+      // await getTodosOfUser(userId);
       return todoObject;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -67,12 +68,60 @@ export const getTodosOfUser = createAsyncThunk(
   "todo/getTodoWithId",
   async ({ id }, { rejectWithValue }) => {
     try {
-      console.log("here");
       const { data } = await instance.get("/api/v1/todo/gettodosWithId", {
-        id,
+        params: {
+          id: id,
+        },
       });
-      console.log("Data");
-      return data;
+      return Array(...data.data);
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error);
+      } else {
+        return rejectWithValue(error);
+      }
+    }
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "todo/deleteTodo",
+  async ({ userId, todoId }, { rejectWithValue }) => {
+    try {
+      const data = await instance.post("/api/v1/todo/deleteTodo", {
+        userId,
+        todoId,
+      });
+      console.log("Data is" + JSON.stringify(data));
+      if (data.status === 200) {
+        // await getTodosOfUser(id);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error);
+      } else {
+        return rejectWithValue(error);
+      }
+    }
+  }
+);
+
+export const updateStatusOfTodo = createAsyncThunk(
+  "todo/updateStatusOfTodo",
+  async ({ option, todoId }, { rejectWithValue }) => {
+    try {
+      const { data } = await instance.post("/api/v1/todo/updateStatusOfTodo", {
+        option,
+        todoId,
+      });
+      if (data.status === 200) {
+        return true;
+      } else {
+        throw new Error("Error by harsh");
+      }
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error);

@@ -53,6 +53,7 @@
     margin-top:10px;
     justify-content: space-between;
     align-items: center;
+    
 }
 .todo-status{
     width: 60%;
@@ -117,4 +118,9 @@
     100%{
         background-color: hsl(200,20%,95%);
     }
+}
+
+
+#bin-img{
+    height: 2em;
 }

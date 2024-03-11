@@ -8,6 +8,7 @@ function AddTodoForm(props) {
   const [date,setDate] = useState(new Date());
   const [description,setDescription] = useState('');
   const [title,setTitle] = useState();
+  const  {userInfo} = useSelector(state => state.auth)
   
 
   const handleCancel = () => {
@@ -19,7 +20,7 @@ function AddTodoForm(props) {
     // send request to backend
     // const result = await postTodo({title,description,date,userId:'3'})
 
-    dispatch(addTodo({title:title,description:description,date:date,userId: 3}))
+    dispatch(addTodo({title:title,description:description,date:date,userId: userInfo.id}))
     props.setTrigger(false);
   }
 
