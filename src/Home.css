@@ -124,3 +124,93 @@
 #bin-img{
     height: 2em;
 }
+
+
+.todo-container {
+    border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    display: inline-block;
+    border: none;
+    
+}
+
+.todo-dropdown {
+    /* border: none;
+    padding: 10px;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    font-size:1rem ;
+    font-weight: 800;
+    -webkit-appearance: none;
+    -moz-appearance: none; */
+    /* color: white; */
+    border: none;
+    padding: 10px;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: white;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 800;
+    /* Add box shadow to give depth */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-dropdown option {
+    /* font-family: 'Roboto', sans-serif;
+    background-color: white; */
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 1.4rem;
+}
+
+.todo-dropdown::-ms-expand {
+    display: none;
+  }
+
+
+.todo-dropdown::after {
+    content: '▼'; /* Unicode for downward arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Ensure the arrow does not interfere with clicking */
+  }
+  
+  /* Style hover effect for options */
+  .todo-dropdown option:hover {
+    background-color: #f0f0f0;
+  }
+
+/* Define colors based on todo status */
+.todo-dropdown[disabled="disabled"] {
+    background-color: #937070; 
+}
+
+.todo-dropdown[value="completed"] {
+    background-color: #4caf50; /* Green color for completed */
+}
+
+.todo-dropdown[value="ongoing"] {
+    background-color: #ffeb3b; /* Yellow color for ongoing */
+}
+
+.todo-dropdown[value="incomplete"] {
+    background-color: #f44336; /* Red color for incomplete */
+}
+
+  

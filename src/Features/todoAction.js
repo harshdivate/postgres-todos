@@ -88,6 +88,7 @@ export const deleteTodo = createAsyncThunk(
   "todo/deleteTodo",
   async ({ userId, todoId }, { rejectWithValue }) => {
     try {
+      console.log(userId, todoId);
       const data = await instance.post("/api/v1/todo/deleteTodo", {
         userId,
         todoId,
@@ -113,7 +114,7 @@ export const updateStatusOfTodo = createAsyncThunk(
   "todo/updateStatusOfTodo",
   async ({ option, todoId }, { rejectWithValue }) => {
     try {
-      const { data } = await instance.post("/api/v1/todo/updateStatusOfTodo", {
+      const { data } = await instance.post("/api/v1/todo/updateStatusOfTodo/", {
         option,
         todoId,
       });

@@ -7,7 +7,24 @@ import { CookiesProvider, useCookies, Cookies } from "react-cookie";
 import { setInitialState } from "./Features/authSlice.js";
 import useTodoDummy from "./useDummyTodos.js";
 import AddTodoForm from "./components/AddTodoFrom/AddTodoForm.jsx";
-import { getTodosOfUser, deleteTodo } from "./Features/todoAction.js";
+import {
+  getTodosOfUser,
+  deleteTodo,
+  updateStatusOfTodo,
+} from "./Features/todoAction.js";
+
+function getStatusColor(status) {
+  switch (status) {
+    case "completed":
+      return "#4caf50"; // Green color for completed
+    case "ongoing":
+      return "#ffeb3b"; // Yellow color for ongoing
+    case "incomplete":
+      return "#f44336"; // Red color for incomplete
+    default:
+      return "#e0e0e0"; // Default color
+  }
+}
 
 function Home() {
   const navigate = useNavigate();
@@ -23,7 +40,6 @@ function Home() {
 
   useEffect(() => {
     const accessToken = cookies.accessToken;
-    console.log("here");
     if (!accessToken) {
       dispatch(setInitialState());
       navigate("/login");
@@ -38,11 +54,12 @@ function Home() {
     }
   }, []);
   const handleTodoStatusChange = (event, todoId) => {
-    // dispatch(updateStatusOfTodo({event.target.value,todoId}))
+    dispatch(
+      updateStatusOfTodo({ option: event.target.value, todoId: todoId })
+    );
   };
   const performDeletTodo = (id) => {
     dispatch(deleteTodo({ userId: userId, todoId: id }));
-    setT(useSelector((state) => state.todo));
   };
   return (
     <div className="home-container">
@@ -60,20 +77,23 @@ function Home() {
             <div key={`${e.id}`} className="todo-main">
               <div>{e.title}</div>
               <div className="todo-description ">{e.description}</div>
-              <div>{JSON.stringify(e.date)}</div>
+              <div>{e.date}</div>
 
               <div className="todo-footer">
-                <div>
+                <div className="todo-container">
                   <select
-                    defaultValue={"DEFAULT"}
+                    defaultValue={e.status}
+                    disabled={e.status === "completed"}
                     onChange={(event) => handleTodoStatusChange(event, e.id)}
+                    className="todo-dropdown"
+                    style={{ backgroundColor: getStatusColor(e.status) }}
                   >
                     <option value="DEFAULT" disabled>
                       Choose ...
                     </option>
                     <option value={"completed"}>Completed</option>
                     <option value={"ongoing"}>Ongoing</option>
-                    <option value={"incomplete"}>In Complete</option>
+                    <option value={"incomplete"}>Incomplete</option>
                   </select>
                 </div>
                 {/* <div className="todo-options"> */}
@@ -81,7 +101,7 @@ function Home() {
                   <img
                     id="bin-img"
                     src="./public/bin.png"
-                    onClick={performDeletTodo}
+                    onClick={() => performDeletTodo(e.id)}
                   />
                 </div>
                 <div>{"M"}</div>

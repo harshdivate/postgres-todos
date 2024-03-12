@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTodo, getTodosOfUser } from "./todoAction.js";
+import { addTodo, getTodosOfUser, updateStatusOfTodo } from "./todoAction.js";
 
 const initialState = {
   todos: [],
@@ -37,6 +37,17 @@ export const todoSlice = createSlice({
           (state.success = true);
       })
       .addCase(getTodosOfUser.rejected, (state, { payload }) => {
+        (state.error = payload), (state.loading = false);
+      });
+    builder
+      .addCase(updateStatusOfTodo.pending, (state) => {
+        (state.loading = true), (state.error = null);
+      })
+      .addCase(updateStatusOfTodo.fulfilled, (state, { payload }) => {
+        // state.todos = initialState.todos;
+        (state.loading = false), (state.success = true);
+      })
+      .addCase(updateStatusOfTodo.rejected, (state, { payload }) => {
         (state.error = payload), (state.loading = false);
       });
   },
